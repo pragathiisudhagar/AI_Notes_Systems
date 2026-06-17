@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-6">
+        <h1 class="display-3 fw-bold text-dark mb-4">Your Second Brain, Powered by <span class="text-primary">AI</span></h1>
+        <p class="lead text-muted mb-5">Capture your thoughts, manage your notes, and let Artificial Intelligence help you summarize, extract key points, and learn faster.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg px-4 me-md-2">Get Started Free</a>
+            <a href="{{ url_for('main.about') }}" class="btn btn-outline-secondary btn-lg px-4">Learn More</a>
+        </div>
+    </div>
+    <div class="col-lg-6 d-none d-lg-block">
+        <div class="p-5 bg-white rounded-4 shadow-lg">
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 bg-primary text-white rounded-circle p-2 px-3 fw-bold">1</div>
+                <div class="ms-3 h5 mb-0">Write a meeting note</div>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 bg-success text-white rounded-circle p-2 px-3 fw-bold">2</div>
+                <div class="ms-3 h5 mb-0">Click "Summarize"</div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-warning text-dark rounded-circle p-2 px-3 fw-bold">3</div>
+                <div class="ms-3 h5 mb-0">Get instant AI insights</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 text-center">
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded-3 h-100">
+            <h3 class="h5 fw-bold">Secure Auth</h3>
+            <p class="text-muted">Private notes management with industry-standard encryption.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded-3 h-100">
+            <h3 class="h5 fw-bold">AI Enrichment</h3>
+            <p class="text-muted">Instantly summarize and extract key points from your long notes.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded-3 h-100">
+            <h3 class="h5 fw-bold">Quiz Generation</h3>
+            <p class="text-muted">Transform your notes into study material with AI-generated questions.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

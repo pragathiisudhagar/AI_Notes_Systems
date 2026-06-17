@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 fw-bold">My Notes</h1>
+    <a href="{{ url_for('main.create_note') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Create New Note
+    </a>
+</div>
+
+{% if notes %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for note in notes %}
+    <div class="col">
+        <div class="card h-100 note-card">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-truncate">{{ note.title }}</h5>
+                <p class="card-text text-muted small mb-2">
+                    Updated {{ note.updated_at.strftime('%Y-%m-%d') }}
+                </p>
+                <p class="card-text note-excerpt">{{ note.content[:150] }}{{ '...' if note.content|length > 150 else '' }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-0 d-flex justify-content-between pb-3">
+                <a href="{{ url_for('main.view_note', note_id=note.id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+                        Actions
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-menu-item dropdown-item" href="{{ url_for('main.edit_note', note_id=note.id) }}">Edit</a></li>
+                        <li>
+                            <form action="{{ url_for('main.delete_note', note_id=note.id) }}" method="POST" onsubmit="return confirm('Delete this note?')">
+                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <div class="display-4 text-muted mb-3"><i class="bi bi-journal-text"></i></div>
+    <h3>No notes found</h3>
+    <p class="text-muted">Start by creating your first AI-powered note!</p>
+    <a href="{{ url_for('main.create_note') }}" class="btn btn-primary btn-lg mt-2">Create Note</a>
+</div>
+{% endif %}
+{% endblock %}

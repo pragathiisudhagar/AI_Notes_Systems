@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 fw-bold">{{ note.title }}</h1>
+                <div>
+                    <a href="{{ url_for('main.edit_note', note_id=note.id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-light btn-sm ms-2">Back</a>
+                </div>
+            </div>
+            
+            <div class="mb-4 text-muted small">
+                Created: {{ note.created_at.strftime('%B %d, %Y %H:%M') }} | 
+                Last Updated: {{ note.updated_at.strftime('%B %d, %Y %H:%M') }}
+            </div>
+
+            <div class="note-content p-3 bg-light rounded mb-5" style="white-space: pre-wrap;">{{ note.content }}</div>
+
+            <div class="ai-features border-top pt-4">
+                <h4 class="h5 fw-bold mb-3">AI Analysis</h4>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button class="btn btn-info text-white" onclick="aiAction('summarize')">Summarize</button>
+                    <button class="btn btn-success" onclick="aiAction('key-points')">Key Points</button>
+                    <button class="btn btn-warning" onclick="aiAction('quiz')">Generate Quiz</button>
+                </div>
+
+                <div id="ai-result-container" class="d-none">
+                    <div class="card bg-dark text-white p-3">
+                        <h5 class="h6 fw-bold border-bottom border-secondary pb-2 mb-2" id="ai-result-title">AI Output</h5>
+                        <div id="ai-result-content" class="small" style="white-space: pre-wrap;"></div>
+                        <div class="mt-3 text-end">
+                            <button class="btn btn-sm btn-outline-light" onclick="hideAI()">Close</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="ai-loading" class="d-none text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Thinking...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function aiAction(type) {
+    const container = document.getElementById('ai-result-container');
+    const content = document.getElementById('ai-result-content');
+    const title = document.getElementById('ai-result-title');
+    const loading = document.getElementById('ai-loading');
+
+    container.classList.add('d-none');
+    loading.classList.remove('d-none');
+
+    const titles = {
+        'summarize': 'Summary',
+        'key-points': 'Key Points',
+        'quiz': 'Practice Quiz'
+    };
+    title.innerText = titles[type];
+
+    try {
+        const response = await fetch(`/notes/{{ note.id }}/${type}`);
+        const data = await response.json();
+        content.innerText = data.result;
+        container.classList.remove('d-none');
+    } catch (error) {
+        content.innerText = "Error fetching AI response. Please try again.";
+        container.classList.remove('d-none');
+    } finally {
+        loading.classList.add('d-none');
+    }
+}
+
+function hideAI() {
+    document.getElementById('ai-result-container').classList.add('d-none');
+}
+</script>
+{% endblock %}
